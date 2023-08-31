@@ -83,6 +83,19 @@ class TemperatureInput extends React.Component {
     }
 }
 
+function Button({type, children}) {
+    const className = "btn btn-" + type
+    return <button className={className}>{children}</button>
+}
+
+function PrimaryButton({children}) {
+    return <Button type='primary'>{children}</Button>
+}
+
+function SecondaryButton({children}) {
+    return <Button type='secondary'>{children}</Button>
+}
+
 /**
  * composant qui affiche les 2 champs, affiche la conversion et donne le verdict de l'état de l'eau
  */
@@ -144,6 +157,9 @@ class Calculator extends React.Component {
                 />
                 {/* {JSON.stringify(this.state)} */}
                 <BoilerVerdict celsius={parseFloat(celsius)}/>
+                <PrimaryButton>Envoyer</PrimaryButton>
+                <SecondaryButton>Envoyer encore</SecondaryButton>
+
             </div>
         }
 }
