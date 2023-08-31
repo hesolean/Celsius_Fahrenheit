@@ -16,6 +16,15 @@ function toFahrenheit(celsius) {
     return (celsius*9/5)+32
 }
 
+function tryConcert(temperature, convert){
+    const value = parseFloat(temperature)
+    if (Number.isNaN(value)) {
+        return '';
+    }
+        // *100 /100 pour avoir une précision à 2 chiffres
+    return (Math.round(convert(value)*100/100)).toString()
+}
+
 class TemperatureInput extends React.Component {
     constructor(props) {
         super(props)
@@ -46,30 +55,49 @@ class Calculator extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            scale: 'c',
             temperature: 20
         }
-        this.handleTemperatureChange = this.handleTemperatureChange.bind(this)
+        this.handleCelsiusChange = this.handleCelsiusChange.bind(this)
+        this.handleFahrenheitChange = this.handleFahrenheitChange.bind(this)
+
     }
 
-    handleTemperatureChange(temperature){
-        this.setState({temperature})
+    handleCelsiusChange(temperature){
+        this.setState({
+            scale: "c",
+            temperature
+        })
     }
+
+    handleFahrenheitChange(temperature){
+        this.setState({
+            scale: "f",
+            temperature
+        })
+    }
+
     render() {
         
         // on destructure pour ne plus à avoir à ajouter à chaque fois this.state.temperature
-        const {temperature} = this.state
+        const {temperature, scale} = this.state
         
-        const celsius = temperature
-        const fahrenheit = toFahrenheit(celsius)
+        const celsius = scale === 'c' ? temperature : tryConcert(temperature, toCelsius)
+        const fahrenheit = scale === 'f'? temperature : tryConcert(temperature, toFahrenheit)
 
         return <div className='container'>
                 <TemperatureInput 
                     scale="c" 
                     temperature={celsius} 
-                    onTemperatureChange={this.handleTemperatureChange}/>
-                <TemperatureInput scale="f" temperature={fahrenheit}/>
+                    onTemperatureChange={this.handleCelsiusChange}
+                />
+                <TemperatureInput 
+                    scale="f" 
+                    temperature={fahrenheit}
+                    onTemperatureChange={this.handleFahrenheitChange}
+                />
                 {/* {JSON.stringify(this.state)} */}
-                <BoilerVerdict celsius={parseFloat(temperature)}/>
+                <BoilerVerdict celsius={parseFloat(celsius)}/>
             </div>
         }
 }
