@@ -10,8 +10,8 @@ const scaleNames = {
  * @returns 
  */
 function BoilerVerdict({celsius}) {
-    const message = celsius>100 ? "L'eau bout" : "L'eau ne bout pas"
-    return <p className="alert">{message}</p>
+    const message = celsius>100 ?"L'eau bout" : "L'eau ne bout pas"
+    return <p>{message}</p>
 }
 
 /**
@@ -83,17 +83,39 @@ class TemperatureInput extends React.Component {
     }
 }
 
+/**
+ * crée un bouton en fonction du type renseigné
+ * @param {string, children} param0 
+ * @returns 
+ */
 function Button({type, children}) {
     const className = "btn btn-" + type
     return <button className={className}>{children}</button>
 }
 
+/**
+ * crée un bouton primaire avec le composant button
+ * @param {children} param0 
+ * @returns 
+ */
 function PrimaryButton({children}) {
     return <Button type='primary'>{children}</Button>
 }
 
+/**
+ * crée un bouton secondaire avec le composant button
+ * @param {children} param0 
+ * @returns 
+ */
 function SecondaryButton({children}) {
     return <Button type='secondary'>{children}</Button>
+}
+
+function Column2({left, right}) {
+    return <div className='row'>
+        <div className="col-md-6">{left}</div>
+        <div className="col-md-6">{right}</div>
+    </div>
 }
 
 /**
@@ -145,16 +167,18 @@ class Calculator extends React.Component {
         const fahrenheit = scale === 'f'? temperature : tryConcert(temperature, toFahrenheit)
 
         return <div className='container'>
-                <TemperatureInput 
+            <Column2 left={<TemperatureInput 
                     scale="c" 
                     temperature={celsius} 
                     onTemperatureChange={this.handleCelsiusChange}
-                />
-                <TemperatureInput 
+                />}
+                right={<TemperatureInput 
                     scale="f" 
                     temperature={fahrenheit}
                     onTemperatureChange={this.handleFahrenheitChange}
-                />
+                />} 
+            />
+                
                 {/* {JSON.stringify(this.state)} */}
                 <BoilerVerdict celsius={parseFloat(celsius)}/>
                 <PrimaryButton>Envoyer</PrimaryButton>
